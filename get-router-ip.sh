@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#This script is trying to get an ip adress of your router.
-#List contains almost all router brands login ip-s.
+#This script is trying to get an IP address of your router.
+#List contains almost all router brands login IP-s.
 
-trap "echo ' script execution stopped' 2>&1; exit 1; " SIGINT SIGTERM
+trap "echo ' $0 execution is stopped' 2>&1; exit 1; " SIGINT SIGTERM
 
 declare -a ips
 ips=(
