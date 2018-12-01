@@ -1,0 +1,489 @@
+#!/bin/bash			
+			>>>>3 EXPLORING_THE_SYSTEM
+/ The root directory. Where everything begins.
+/bin # Contains binaries (programs) that must be present for the system to boot and run.
+/boot # Contains the Linux kernel, initial RAM disk image (for drivers needed at boot time), and the boot loader. Interesting files:
+/dev # This is a special directory which contains device nodes. “Everything is a file” also applies to devices. Here is where the kernel maintains a list of all the devices it understands.
+/etc # The /etc directory contains all of the system-wide configuration files. It also contains a collection of shell scripts which start each of the system services at boot time. Everything in this directory should be readable text. Interesting files: While everything in /etc is interesting, here are some all-time favorites:
+/home # In normal configurations, each user is given a directory in
+/home. # Ordinary users can only write files in their home directories. This limitation protects the system from errant user activity.
+/lib # Contains shared library files used by the core system programs. These are similar to DLLs in Windows.
+/lost+found # Each formatted partition or device using a Linux file system, such as ext3, will have this directory. It is used in the case of a partial recovery from a file system corruption event. Unless something really bad has happened to your system, this directory will remain empty.
+/media # On modern Linux systems the /media directory will contain the mount points for removable media such as USB drives, CD-ROMs, etc. that are mounted automatically at insertion.
+/mnt # On older Linux systems, the /mnt directory contains mount points for removable devices that have been mounted manually.
+/opt # The /opt directory is used to install “optional” software. This is mainly used to hold commercial software products that may be installed on your system.
+/proc # The /proc directory is special. Its not a real file system in the sense of files stored on your hard drive. Rather, it is a virtual file system maintained by the Linux kernel. The “files” it contains are peepholes into the kernel itself. The files are readable and will give you a picture of how the kernel sees your computer.
+/root # This is the home directory for the root account.
+/sbin # This directory contains “system” binaries. These are programs that perform vital system tasks that are generally reserved for the superuser.
+/tmp # The /tmp directory is intended for storage of temporary, transient files created by various programs. Some configurations cause this directory to be emptied each time the system is rebooted.
+/usr # The /usr directory tree is likely the largest one on a Linux system. It contains all the programs and support files used by regular users.
+/usr/bin # /usr/bin contains the executable programs installed by your Linux distribution. It is not uncommon for this directory to hold thousands of programs.
+/usr/lib # The shared libraries for the programs in /usr/bin.
+/usr/local # The /usr/local tree is where programs that are not included with your distribution but are intended for systemwide use are installed. Programs compiled from source code are normally installed in /usr/local/bin. On a newly installed Linux system, this tree exists, but it will be empty until the system administrator puts something in it.
+/usr/sbin # Contains more system administration programs.
+/usr/share # /usr/share contains all the shared data used by programs in /usr/bin. This includes things like default configuration files, icons, screen backgrounds, sound files, etc.
+/usr/share/doc # Most packages installed on the system will include some kind of documentation. In /usr/share/doc, we will find documentation files organized by package.
+/var # With the exception of /tmp and /home, the directories we have looked at so far remain relatively static, that is, their contents don't change. The /var directory tree is where data that is likely to change is stored. Various databases, spool files, user mail, etc. are located here.
+/var/log # /var/log contains log files, records of various system activity. These are very important and should be monitored from time to time. The most useful ones are
+/var/log/messages # and/or /var/log/syslog. Note that for security reasons on some systems, you must be the superuser to view log files.
+			
+			>>>>4 MANIPULATING_FILES_AND_DIR
+wc -l /usr/share/dict/words.txt
+ls -la /root
+ls -R # recursive
+	# combine the -a (hidden) option with the -l option (more) into -la, you get all the details of the hidden files
+stat playground/timestamp # souped-up version of ls/ all that the system understands about a file and its attributes
+mkdir -p playground/dir-{001..100}
+touch playground/dir-{001..100}/file-{A..Z}
+
+ln -s file1 link1 #  Soft link the following would create a soft link named link1 to a file named file1, both in the current directory
+
+mount /dev/sda1 /mnt/usb 
+			>>>>9 PERMISSIONS
+sudo chmod -R ugo+rw /DATA/SHARE
+	#sudo – this is used to gain admin rights for the command on any system that makes use of sudo (otherwise you'd have to 'su' to root and run the above command without 'sudo')
+	#chmod – the command to modify permissions
+	#-R – this modifies the permission of the parent folder and the child objects within
+    #ugo+rw – this gives User, Group, and Other read and write access. r – read   w – write   x – execute
+    		
+    		>>>>10 PROCESSES
+ps afx | grep java
+	#ps - show processes
+	#afx
+jobs # shows list of jobs
+fg 1 # foreground 
+# send TSTR signal to job type (CTRL + Z))
+bg 1 # background
+java -jar myJar.jar &			# ampersand puts to background
+			
+			>>>>14 PACKAGE_MANAGEMENT
+apt-cache search mc | less
+dpkg --list # list of local packages
+			
+sudo apt-get remove mc
+sudo add-apt-repository ppa:eugenesan/ppa
+sudo apt-get update
+sudo apt-get install mc
+apt-cache search keyword
+
+source ~/.bashrc # or just: '. ~/.bashrc' . Reload script.
+			
+			>>>>15 STORAGE
+less /etc/fstab # “file system table”.  fsck - Devices with a zero as the last digit are not routinely checked.
+df # Show information about the file system on which each FILE resides
+md5sum TestFile
+du -s -BK /usr/share/* | head # show disk space
+df --human-readable #disk space utilization
+sudo du -sh /home/* #home space utilization
+du -sh /opt/minecraft-pi #folder size
+#ubuntu file system root dir
+c:\Users\Eone\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\eone\
+			
+			>>>>16 NETWORKING
+traceroute slashdot.org
+ip a # multi-purpose network configuration tool
+ip addr showip addr show
+netstat -ie # program is used to examine various network settings and statistics.
+# “-ie” option, we can examine the network interfaces in our system:
+netstat -r #Using the “-r” option will display the kernel’s network routing table
+
+sudo service ssh start
+sudo service ssh status
+ssh localhost
+	exit
+ssh test2@localhost 'ls *' > dirlist_byssh_for_user_test2.txt
+scp test2@localhost:test2_ls_output.txt . #copy file from remoute
+sftp remote-sys #if you cold SSH means you could used server as ftp
+	ls
+	get ubuntu-18.iso
+	bye
+
+sudo useradd -m test2 # create a new user with home dir.
+sudo passwd test2 # add a password
+			
+			>>>>17 FIND
+locate zip | grep bin # file, derectories serach by part of name. Uses a db from updatedb that is setuped by cron job
+# "tests"
+find ~ | wc -l #more options then locate
+find ~ -type f -name "*.JPG" -size +1M | wc -l
+find / -cmin 1 # and many others "tests"
+# Find Operators
+find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \) #all the files and subdirectories in a directory had secure permissions?
+	# -and -or -not ( )
+find ~ -type f -name 'foo*' -ok ls -l '{}' ';'
+find ~ -type f -name 'foo*' -exec ls -l '{}' + # example the system only has to execute the ls command once.
+find ~ -type f -name 'foo*' -print | xargs ls -l # xargs - accepts input from standard input and converts it into an argument list for a specified command
+find playground -type f -newer playground/timestamp
+# Options
+-noleaf -maxdepth levels -depth ...
+			
+			>>>>18 Compressing
+gzip foo.txt # bzip2 slower but higher level of compression
+gzip -tv foo.txt.gz # t Test the integrity of a compressed file. v Display verbose messages while compressing
+gzip -d foo.txt.gz # Decompress. or gunzip
+ls -l /etc | gzip > foo.txt.gz
+gunzip -c foo.txt | less # -c Write output to standard output and keep original files.
+	# Archiving Files    .tar or .tgz, which indicate a “plain” tar archive and a gzipped archive, respectively
+tar cf playground.tar playground # c Create an archive from a list of files and/or directories. f option, which is used to specify the name of the tar archive,
+tar xf playground.tar # x Extract an archive.
+find playground -name 'file-A' -exec tar rf playground.tar '{}' '+' # r Append to the end of archive
+find playground -name 'file-A' | tar czf playground.tgz -T - # -T also a --files-from. “-” to represent standard input/output
+ssh [remote-sys] 'tar cf - Documents' | tar xf - # able to copy a directory named Documents from the remote system
+zip -r playground.zip playground # familiar to Windows users
+unzip ../playground.zip
+	#Synchronizing Files
+rsync -av --delete playground foo # -a archiving(recursion and preservation of file artributes) and -v for verbose output, --delete del in foo files that no longer existed on the source device
+alias backup='sudo rsync -av --delete /etc /home /usr/local/media/BigDisk/backup'
+sudo rsync -av --delete --rsh=ssh /etc /home/usr/local remote-sys:/backup
+			
+			>>>>19 Regular_EXPRESSION
+			# POSIX Basic 						^ $ . [ ] *
+grep -rnw '/path/to/somewhere/' -e 'pattern' #-r or -R is recursive, -n is line number, and -w stands for match the whole word. -l (lower-case L) can be added to just give the file name of matching files.
+grep -i '^..j.R$' /usr/share/dict/words.txt #crossword game. ^caret (beginning) and $ dollar(end)
+grep -h '[bg]zip' dirlist*.txt # -h no file name. RESULT: “bzip” or “gzip”.
+grep -h '[^bg]zip' dirlist*.txt # ^ here is negation
+grep -h '^[A-Z0-9]' dirlist*.txt   # ^ begins with Uppecase or number
+# POSIX character classes [:alnum:] [:space:] [:blank:] ...
+			# ERE Extended Regular Expressions  ( ) { } ? + |
+echo "BBB" | grep -E 'AAA|BBB' # -E or egrep enables ERE
+grep -Eh '^(bz|gz|zip)' dirlist*.txt #match lines in our lists that start with either “bz”, “gz”, or “zip”
+#? - Match An Element Zero Or One Time
+echo "(555) 123-4567" | grep -E '^\(?[0-9][0-9][0-9]\)? [0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]$' # \( backslash is required in ERE mode
+#* - Match An Element Zero Or More Times
+echo "This works." | grep -E '[[:upper:]][[:upper:][:lower:] ]*\.' 
+#+ - Match An Element One Or More Times
+echo "abcd abc ab a" | grep -E '^([[:alpha:]]+ ?)+$'
+#{ n, m} - Match An Element A Specific Number Of Times
+echo "(555) 123-4567" | grep -E '^\(?[0-9]{3}\)? [0-9]{3}-[0-9]{4}$'
+# Validating A Phone List With grep
+for i in {1..10}; do echo "(${RANDOM:0:3}) ${RANDOM:0:3}-${RANDOM:0:4}" >> phonelist.txt; done
+grep -Ev '^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' phonelist.txt # -v option to produce an inverse match
+less phonelist.txt #and then /^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$ will highlight the strings
+cd /usr/share/man/man1
+zgrep -El 'regex|regular expression' *.gz # allowing to read compressed files.
+			
+			>>>>20 TEXT_PROCESSING
+dos2unix #convert files from DOS to Unix format
+tr -d '\r' < dos_file > unix_file # This also can be performed with tr as follows <<<
+sort foo.txt foo2.txt > fooSorted.txt # sorting. has a lot of flags. fe: --ignore-leading-blanks, --reverse, --numeric-sort, -k Sort based on a key field located, -t option to define the field separator character, -f cut fields
+cat > foo.txt # write to file. (CTRL + D for END). 
+sort --key=1,1 --key=2n distros.txt # two keys for sorting
+uniq # removes any duplicate lines
+paste # The paste command does the opposite of cut. it adds one or more columns of text to a file
+paste distros-dates.txt distros-versions.txt
+join #It joins data from multiple files based on a shared key field.
+comm file1.txt file2.txt # compare the two files. Simple program
+diff -c file1.txt file2.txt # compare
+tr # transliterate characters
+	echo "lowercase letters" | tr a-z A-Z
+	echo "secret text" | tr a-zA-Z n-za-mN-ZA-M # ROT13: The Not-So-Secret Decoder Ring
+	echo "frperg grkg" | tr a-zA-Z n-za-mN-ZA-M
+sed # short for stream editor. very complex program
+	echo "front" | sed 's_front_back_' #s/regexp/replacement/ Substitute the contents of replacement wherever regexp is found.
+	sed 's/\([0-9]\{2\}\)\/\([0-9]\{2\}\)\/\([0-9]\{4\}\)$/\3-\1-\2/' distros.txt #'s/regexp/replacement/' 12/07/2006 -> 2006-12-07
+	sed -i 's/lazy/laxy/; s/jumped/jimped/' foo.txt # -i it will rewrite the file
+awk # similar to sed. Its specific strength is its ability to manipulate tabular data.
+perl # tool. It is often used instead of shell scripts for many system-management and administration tasks,
+aspell check foo.txt # an interactive spelling checker.  -c|check <file> to check a file
+	aspell -H check foo.html
+
+			>>>>21 Formatting_Output
+nl distros.txt | head # It numbers lines.
+	sort -k 1,1 -k 2n distros.txt | sed -f distros-nl.sed | nl  # also supports a concept called “logical pages” see: '\\:\\:\\:\' in distros-nl.sed
+fold # – Wrap Each Line To A Specified Length
+	echo "The quick brown fox jumped over the lazy dog." | fold -w 12 -s
+fmt – A Simple Text Formatter # Basically, it fills and joins lines intext while preserving blank lines and indentation.
+	fmt -cw 50 fmt-info.txt
+printf – Format And Print Data
+	printf "I formatted '%s' as a string.\n" foo
+	printf "%d, %f, %o, %s, %x, %X\n" 380 380 380 380 380 380
+	#%[flags][width][.precision]conversion_specification
+groff # format of table
+
+			>>>>22 Printing
+
+			>>>>23 Compiling_Programs
+wget http://ftp.gnu.org/gnu/diction/diction-1.11.tar.gz
+tar xzf diction-1.11.tar.gz
+./configure # Shell script. We must explicitly tell the shell its location by prefixing the command with ./
+make # everything that needs building based on the updated code is built
+sudo make install #perform the installation
+which diction #check that the program is ready to go
+
+			>>>>24 Writing_Script
+			man bash # contain a lot of information about expansion, variables ...
+chmod 755 ~/bin/sys_info_page # make file executable
+	echo "he 
+	> lo" #double quotations allows to write more than in one row
+declare -r TITLE="Page Title" #enforse a READ_ONLY state
+variables declaration:
+a=z
+b="a string"
+c="a string and $b"
+d="$(ls -l foo.txt)"
+e=$((5 * 7))
+f="\t\ta string\n"
+#additional form of I/O redirection
+command << token
+	text
+token
+#It’s mostly the same as echo, except that, by default, single and double quotes within here documents lose their special meaning to the shell.
+<<- # with <<- shell will ignore tabs
+ftp -n <<- _EOF_
+	open $FTP_SERVER
+	user anonymous me@linuxbox
+	cd $FTP_PATH
+	hash
+	get $REMOTE_FILE
+	bye
+_EOF_
+		
+		>>>> 26 TopDown Design
+local foo #local variables are defined by preceding the variable name with the word local.
+		
+		>>>> 27 Flow Control: Branching With if
+if commands; then
+	commands
+[elif commands; then
+	commands...]
+[else
+	commands]
+fi
+# Exit Status: 0 - success
+true
+echo $? #0
+false
+echo $? #1
+test expression #equals to more popular [ expression ]
+# File Expressions
+file1 -ef file2 # the same by hard linking
+file1 -nt file2 # is newer
+file1 -ot file2 # older
+	-b file # is a device file
+	-c 		# is a character
+	-d 		# is a directory
+	-e      # just exists
+	-f 	
+	-g 		# is set group
+	-S 		# is network socket
+	-t 		
+	-w 		# is writable for current user
+	-x      # is executable
+exit 0 # When no argument is passed, the exit status defaults to the exit status of the last command executed
+# When a script “runs off the end” (reaches end of file), it terminates with an exit status of the last command executed.
+# Similarly, shell functions can return an exit status by including an integer argument to the return command
+test_file () {
+	# test-file: Evaluate the status of a file
+	FILE=~/.bashrc
+	if [ -e "$FILE" ]; then      #always casts to string to avoid a possible problems with an undefined
+		if [ -f "$FILE" ]; then
+			echo "$FILE is a regular file."
+		fi
+		if [ -d "$FILE" ]; then
+			echo "$FILE is a directory."
+		fi
+		if [ -r "$FILE" ]; then
+			echo "$FILE is readable."
+		fi
+		if [ -w "$FILE" ]; then
+			echo "$FILE is writable."
+		fi
+		if [ -x "$FILE" ]; then
+			echo "$FILE is executable/searchable."
+		fi
+	else
+		echo "$FILE does not exist"
+		return 1
+	fi
+}
+elif #else if. By using elif, we are able to construct a more complex logical test.
+# String Expressions. true if
+string 		# string is not a null
+-n string   # if the length > 0
+-z string   # length = 0
+string = string2  # strings are equal. the same as =
+string == string2 # strings are equal
+	   != 		  # not equal
+	   > 		  # sorts after string2
+	   < 		  # sorts before # be curefull. use \< \> in test to avoid redirection.
+# Integer Expressions
+integer1 -eq integer2 # is equal
+         -ne
+         -le # is less or euqal
+         -lt # is less
+         -ge # is grater or euqal
+         -gt 
+if [ $((INT % 2)) -eq 0 ]; then
+	echo "INT is even."
+# The [[ ]] command is very similar to test (it supports all of its expressions), but
+# adds an important new string expression:       string1 =~ regex
+# [[ ]] is specific to bash
+# test is traditional (and part of POSIX)
+if [[ "$INT" =~ ^-?[0-9]+$ ]]; then ...
+if [[ $FILE == foo.* ]]; then
+#(( )) - Designed For Integers
+	#Logical Operators
+Operation 	test 		[[ ]] and (( ))
+AND 		-a              &&
+OR 			-o 				||
+NOT 		!                !
+if [[ ! ("$INT" -ge "$MIN_VAL" && "$INT" -le "$MAX_VAL") ]]; then echo echo "$INT is outside $MIN_VAL to $MAX_VAL."
+else echo "INT is not an integer." >&2 
+	exit 1 
+fi
+# Control Operators: Another Way To Branch
+#With the && operator, command1 isexecuted and command2 is executed if, and only if, command1 is successful
+# With the || operator, command1 is executed and command2 is executed if, and only if, command1 is unsuccessful.
+mkdir temp && cd temp
+[[ -d temp ]] || exit 1
+
+			>>>> 28 Reading_Keyboard_Input
+read [-options] [variable...]
+read #If no variables are listed after the read command, a shell variable, REPLY, will be assigned all the input
+echo "REPLY = '$REPLY'"
+
+
+
+ 		>>>> 30 troubble shoting
+ #!/bin/bash -x 		-x option show executed line
+ export PS4='$LINENO + ' #trace configuration
+ 	#trace a part of code:
+ set -x # Turn on tracing
+ set +x # Turn off tracing
+
+
+
+
+E One, [28.10.18 00:29]
+
+
+
+| is executed in a subshell
+
+As a general rule, always precede wildcards (such as * and ?) with ./ to prevent 
+misinterpretation by commands. This includes things like *.pdf and ???.mp3, etc.
+example   rm * to: rm ./*      ("-rf ~".)
+
+#!/bin/bash -x       tracing mode
+
+set -x # Turn on tracing
+set +x # Turn off tracing
+
+case word in
+  [pattern [| pattern]...) commands ;;]...
+esac
+
+Modern versions of bash, add the “;;&” notation to
+
+$#, Determining The Number of Arguments
+
+The shift command causes all the parameters to “move down one” each time it is executed
+
+Handling Positional Parameters En Masse
+"$@" produces a two word result: "word" "words with spaces"
+
+  			>>>>34 – Strings And Numbers
+echo "${a}_file"
+echo ${foo:-"substitute value if unset"}
+echo ${foo:="default value if unset"}
+echo ${foo:?"parameter is empty"}
+echo ${foo:+"substitute value if set"}
+echo ${!BASH*}     #Expansions That Return Variable Names
+echo "'$foo' is ${#foo} characters long."
+echo ${foo:5:6}    #${parameter:offset:length}
+echo ${foo: -5:2}
+echo ${foo#*.}
+echo ${foo%.*}
+${parameter/pattern/string}
+${parameter//pattern/string}
+${parameter/#pattern/string}
+${parameter/%pattern/string}
+
+time - compare of script efficiency
+
+declare command can be used to normalize strings to either upper or lowercase.
+declare -u upper
+declare -l lower
+
+echo $((0xff))    Hexadecimal notation
+echo $((2#11111111))   base#number number is in base
+
+bc – An Arbitrary Precision Calculator Language
+
+  			>>>> 35 – Arrays
+declare -a a
+or
+a[1]=foo
+days=(Sun Mon Tue Wed Thu Fri Sat)
+days=([0]=Sun [1]=Mon [2]=Tue [3]=Wed [4]=Thu)
+animals=("a dog" "a cat" "a fish")
+for i in "${animals[@]}"; do echo $i; done
+echo ${#a[@]} # number of array elements
+echo ${#a[100]} # length of element 100
+By using the
++= assignment operator, we can automatically append values to the end of an array
+foo+=(d e f)
+a_sorted=($(for i in "${a[@]}"; do echo $i; done | sort)) Sorting An Array
+  Associative Arrays
+declare -A colors
+colors["red"]="#ff0000"
+
+  				>>>> 36 – Exotica
+{ ls -l; echo "Listing of foo.txt"; cat foo.txt; } > output.txt
+(ls -l; echo "Listing of foo.txt"; cat foo.txt) > output.txt
+{ ls -l; echo "Listing of foo.txt"; cat foo.txt; } | lpr
+
+read < <(echo "foo") #Process substitution
+echo $REPLY
+
+trap "echo 'I am ignoring you.'" SIGINT SIGTERM
+
+tempfile=/tmp/$(basename $0).$$.$RANDOM
+tempfile=$(mktemp /tmp/foobar.$$.XXXXXXXXXX) #usage of make temp program
+
+Asynchronous Execution
+pid=$!   always contain the process ID of the last job put into the background.
+wait "$pid"
+
+  Named pipe
+mkfifo pipe1      #ls -l pipe1     -> prw-r--r-- 1 me me 0 2009-07-17 06:41 pipe1 (p is a first letter)
+1st terminal: ls -l > pipe1
+2nd terminal: cat < pipe1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
