@@ -1,4 +1,12 @@
-#!/bin/bash			
+#!/bin/bash
+#The shebang is used to tell the system the name of the interpreter that should be used to
+#execute the script that follows. Every shell script should include this as its first line.
+
+            #syntaxis highlighting variable
+            #http://ezprompt.net/
+export PS1="\[\e[36;40m\]\u\[\e[m\]@\[\e[35;40m\]\h\[\e[m\]:\w\[\e[34m\]\\$\[\e[m\] "
+
+
 			>>>>3 EXPLORING_THE_SYSTEM
 / The root directory. Where everything begins.
 /bin # Contains binaries (programs) that must be present for the system to boot and run.
@@ -55,7 +63,9 @@ fg 1 # foreground
 # send TSTR signal to job type (CTRL + Z))
 bg 1 # background
 java -jar myJar.jar &			# ampersand puts to background
-			
+
+CTRL + z #as background
+CTRL + c #terminate process
 			>>>>14 PACKAGE_MANAGEMENT
 apt-cache search mc | less
 dpkg --list # list of local packages
@@ -73,7 +83,7 @@ less /etc/fstab # “file system table”.  fsck - Devices with a zero as the la
 df # Show information about the file system on which each FILE resides
 md5sum TestFile
 du -s -BK /usr/share/* | head # show disk space
-df --human-readable #disk space utilization
+df --human-readable # -h disk space utilization
 sudo du -sh /home/* #home space utilization
 du -sh /opt/minecraft-pi #folder size
 #ubuntu file system root dir
