@@ -86,8 +86,8 @@ du -s -BK /usr/share/* | head # show disk space
 df --human-readable # -h disk space utilization
 sudo du -sh /home/* #home space utilization
 du -sh /opt/minecraft-pi #folder size
-#ubuntu file system root dir
-c:\Users\Eone\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\eone\
+# Windows Sub System For Linux. Ubuntu fs root path
+#c:\Users\Eone\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\eone\
 			
 			>>>>16 NETWORKING
 traceroute slashdot.org
@@ -96,6 +96,7 @@ ip addr showip addr show
 netstat -ie # program is used to examine various network settings and statistics.
 # “-ie” option, we can examine the network interfaces in our system:
 netstat -r #Using the “-r” option will display the kernel’s network routing table
+netstat -ltnp | grep -w ':80'  # Find Out Which Process Listening on a Particular Port
 
 sudo service ssh start
 sudo service ssh status
@@ -117,7 +118,7 @@ locate zip | grep bin # file, derectories serach by part of name. Uses a db from
 find ~ | wc -l #more options then locate
 find ~ -type f -name "*.JPG" -size +1M | wc -l
 find / -cmin 1 # and many others "tests"
-# Find Operators
+# Find Operatorsexport 
 find ~ \( -type f -not -perm 0600 \) -or \( -type d -not -perm 0700 \) #all the files and subdirectories in a directory had secure permissions?
 	# -and -or -not ( )
 find ~ -type f -name 'foo*' -ok ls -l '{}' ';'
@@ -342,7 +343,7 @@ else echo "INT is not an integer." >&2
 	exit 1 
 fi
 # Control Operators: Another Way To Branch
-#With the && operator, command1 isexecuted and command2 is executed if, and only if, command1 is successful
+#With the && operator, command1 is executed and command2 is executed if, and only if, command1 is successful
 # With the || operator, command1 is executed and command2 is executed if, and only if, command1 is unsuccessful.
 mkdir temp && cd temp
 [[ -d temp ]] || exit 1
@@ -354,7 +355,7 @@ echo "REPLY = '$REPLY'"
 
 
 
- 		>>>> 30 troubble shoting
+ 		>>>> 30 trouble shooting
  #!/bin/bash -x 		-x option show executed line
  export PS4='$LINENO + ' #trace configuration
  	#trace a part of code:
@@ -391,6 +392,8 @@ The shift command causes all the parameters to “move down one” each time it 
 
 Handling Positional Parameters En Masse
 "$@" produces a two word result: "word" "words with spaces"
+
+#$* is a single string, whereas $@ is an actual array. 
 
   			>>>>34 – Strings And Numbers
 echo "${a}_file"
@@ -434,7 +437,7 @@ By using the
 += assignment operator, we can automatically append values to the end of an array
 foo+=(d e f)
 a_sorted=($(for i in "${a[@]}"; do echo $i; done | sort)) Sorting An Array
-  Associative Arrays
+  "Associative Arrays"
 declare -A colors
 colors["red"]="#ff0000"
 
@@ -451,8 +454,8 @@ trap "echo 'I am ignoring you.'" SIGINT SIGTERM
 tempfile=/tmp/$(basename $0).$$.$RANDOM
 tempfile=$(mktemp /tmp/foobar.$$.XXXXXXXXXX) #usage of make temp program
 
-Asynchronous Execution
-pid=$!   always contain the process ID of the last job put into the background.
+			>>>> "Asynchronous Execution"
+pid=$!   #always contain the process ID of the last job put into the background.
 wait "$pid"
 
   Named pipe
@@ -462,6 +465,15 @@ mkfifo pipe1      #ls -l pipe1     -> prw-r--r-- 1 me me 0 2009-07-17 06:41 pipe
 
 
 
+#####################################################
+#####################################################
+
+dos2unix #convert windows-dos endings in script
+
+>>>> VirtualBox install tips:
+
+sudo usermod -G vboxsf -a $USER #give access to read host shared directory
+sudo update-alternatives --config java
 
 
 
