@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x # turn on debugging
+set -x # turn off debugging
 #The shebang is used to tell the system the name of the interpreter that should be used to
 #execute the script that follows. Every shell script should include this as its first line.
 
@@ -439,6 +441,7 @@ echo ${#a[100]} # length of element 100
 By using the
 += assignment operator, we can automatically append values to the end of an array
 foo+=(d e f)
+foo+=(hello)
 a_sorted=($(for i in "${a[@]}"; do echo $i; done | sort)) Sorting An Array
   "Associative Arrays"
 declare -A colors
