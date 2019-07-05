@@ -1,18 +1,27 @@
-#!/bin/bash
-set -x # turn on debugging
-set -x # turn off debugging
 #The shebang is used to tell the system the name of the interpreter that should be used to
 #execute the script that follows. Every shell script should include this as its first line.
+#!/bin/bash
 
-            #syntaxis highlighting variable
-            #http://ezprompt.net/
+#tracing mode for script:
+#!/bin/bash -x
+
+set -x # turn on trace mode
+set -x # turn off trace mode
+
+
+
+set -x # Turn on tracing
+set +x # Turn off tracing
+
+# variable online PS1 (syntax highlighting variable) generator:
+http://ezprompt.net/
 	    
-# customise your ./bashrc 	    
+# customise your ./bashrc. Add next line to the file:
 export PS1="\[\e[36;40m\]\u\[\e[m\]@\[\e[35;40m\]\h\[\e[m\]:\w\[\e[34m\]\\$\[\e[m\] "
 alias ls='ls --color=auto -lah'
 
 
-			>>>>3 EXPLORING_THE_SYSTEM
+################## №3 EXPLORING_THE_SYSTEM
 / The root directory. Where everything begins.
 /bin # Contains binaries (programs) that must be present for the system to boot and run.
 /boot # Contains the Linux kernel, initial RAM disk image (for drivers needed at boot time), and the boot loader. Interesting files:
@@ -39,8 +48,9 @@ alias ls='ls --color=auto -lah'
 /var # With the exception of /tmp and /home, the directories we have looked at so far remain relatively static, that is, their contents don't change. The /var directory tree is where data that is likely to change is stored. Various databases, spool files, user mail, etc. are located here.
 /var/log # /var/log contains log files, records of various system activity. These are very important and should be monitored from time to time. The most useful ones are
 /var/log/messages # and/or /var/log/syslog. Note that for security reasons on some systems, you must be the superuser to view log files.
-			
-			>>>>4 MANIPULATING_FILES_AND_DIR
+
+
+################## №4 MANIPULATING_FILES_AND_DIR
 wc -l /usr/share/dict/words.txt
 ls -la /root
 ls -R # recursive
@@ -51,15 +61,20 @@ touch playground/dir-{001..100}/file-{A..Z}
 
 ln -s file1 link1 #  Soft link the following would create a soft link named link1 to a file named file1, both in the current directory
 
-mount /dev/sda1 /mnt/usb 
-			>>>>9 PERMISSIONS
+#mount filesystem
+#       device  directory
+mount /dev/sda1 /mnt/usb
+
+
+################## №9 PERMISSIONS
 sudo chmod -R ugo+rw /DATA/SHARE
 	#sudo – this is used to gain admin rights for the command on any system that makes use of sudo (otherwise you'd have to 'su' to root and run the above command without 'sudo')
 	#chmod – the command to modify permissions
 	#-R – this modifies the permission of the parent folder and the child objects within
     #ugo+rw – this gives User, Group, and Other read and write access. r – read   w – write   x – execute
-    		
-    		>>>>10 PROCESSES
+
+
+################## №10 PROCESSES
 ps afx | grep java
 	#ps - show processes
 	#afx
@@ -71,7 +86,9 @@ java -jar myJar.jar &			# ampersand puts to background
 
 CTRL + z #as background
 CTRL + c #terminate process
-			>>>>14 PACKAGE_MANAGEMENT
+
+
+################## №14 PACKAGE_MANAGEMENT
 apt-cache search mc | less
 dpkg --list # list of local packages
 			
@@ -82,19 +99,21 @@ sudo apt-get install mc
 apt-cache search keyword
 
 source ~/.bashrc # or just: '. ~/.bashrc' . Reload script.
-			
-			>>>>15 STORAGE
+
+
+################## №15 STORAGE
 less /etc/fstab # “file system table”.  fsck - Devices with a zero as the last digit are not routinely checked.
 df # Show information about the file system on which each FILE resides
+
+#compute md5 hash
 md5sum TestFile
+
 du -s -BK /usr/share/* | head # show disk space
 df --human-readable # -h disk space utilization
 sudo du -sh /home/* #home space utilization
 du -sh /opt/minecraft-pi #folder size
-# Windows Sub System For Linux. Ubuntu fs root path
-#c:\Users\Eone\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\eone\
-			
-			>>>>16 NETWORKING
+
+################## №16 NETWORKING
 traceroute slashdot.org
 ip a # multi-purpose network configuration tool
 ip addr showip addr show
@@ -117,7 +136,7 @@ sftp remote-sys #if you cold SSH means you could used server as ftp
 sudo useradd -m test2 # create a new user with home dir.
 sudo passwd test2 # add a password
 			
-			>>>>17 FIND
+################## №17 FIND
 locate zip | grep bin # file, derectories serach by part of name. Uses a db from updatedb that is setuped by cron job
 # "tests"
 find ~ | wc -l #more options then locate
@@ -132,8 +151,8 @@ find ~ -type f -name 'foo*' -print | xargs ls -l # xargs - accepts input from st
 find playground -type f -newer playground/timestamp
 # Options
 -noleaf -maxdepth levels -depth ...
-			
-			>>>>18 Compressing
+
+################## №18 Compressing
 gzip foo.txt # bzip2 slower but higher level of compression
 gzip -tv foo.txt.gz # t Test the integrity of a compressed file. v Display verbose messages while compressing
 gzip -d foo.txt.gz # Decompress. or gunzip
@@ -152,7 +171,7 @@ rsync -av --delete playground foo # -a archiving(recursion and preservation of f
 alias backup='sudo rsync -av --delete /etc /home /usr/local/media/BigDisk/backup'
 sudo rsync -av --delete --rsh=ssh /etc /home/usr/local remote-sys:/backup
 			
-			>>>>19 Regular_EXPRESSION
+################## №19 Regular_EXPRESSION
 			# POSIX Basic 						^ $ . [ ] *
 grep -rnw '/path/to/somewhere/' -e 'pattern' #-r or -R is recursive, -n is line number, and -w stands for match the whole word. -l (lower-case L) can be added to just give the file name of matching files.
 grep -i '^..j.R$' /usr/share/dict/words.txt #crossword game. ^caret (beginning) and $ dollar(end)
@@ -178,8 +197,7 @@ less phonelist.txt #and then /^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$ will highlight th
 cd /usr/share/man/man1
 zgrep -El 'regex|regular expression' *.gz # allowing to read compressed files.
 			
-			>>>>20 TEXT_PROCESSING
-dos2unix #convert files from DOS to Unix format
+################## №20 TEXT_PROCESSING
 tr -d '\r' < dos_file > unix_file # This also can be performed with tr as follows <<<
 sort foo.txt foo2.txt > fooSorted.txt # sorting. has a lot of flags. fe: --ignore-leading-blanks, --reverse, --numeric-sort, -k Sort based on a key field located, -t option to define the field separator character, -f cut fields
 cat > foo.txt # write to file. (CTRL + D for END). 
@@ -203,22 +221,22 @@ perl # tool. It is often used instead of shell scripts for many system-managemen
 aspell check foo.txt # an interactive spelling checker.  -c|check <file> to check a file
 	aspell -H check foo.html
 
-			>>>>21 Formatting_Output
+################## №21 Formatting_Output
 nl distros.txt | head # It numbers lines.
 	sort -k 1,1 -k 2n distros.txt | sed -f distros-nl.sed | nl  # also supports a concept called “logical pages” see: '\\:\\:\\:\' in distros-nl.sed
 fold # – Wrap Each Line To A Specified Length
 	echo "The quick brown fox jumped over the lazy dog." | fold -w 12 -s
-fmt – A Simple Text Formatter # Basically, it fills and joins lines intext while preserving blank lines and indentation.
+fmt # A Simple Text Formatter # Basically, it fills and joins lines intext while preserving blank lines and indentation.
 	fmt -cw 50 fmt-info.txt
-printf – Format And Print Data
+printf #Format And Print Data
 	printf "I formatted '%s' as a string.\n" foo
 	printf "%d, %f, %o, %s, %x, %X\n" 380 380 380 380 380 380
 	#%[flags][width][.precision]conversion_specification
 groff # format of table
 
-			>>>>22 Printing
+################## №22 Printing
 
-			>>>>23 Compiling_Programs
+################## №23 Compiling_Programs
 wget http://ftp.gnu.org/gnu/diction/diction-1.11.tar.gz
 tar xzf diction-1.11.tar.gz
 ./configure # Shell script. We must explicitly tell the shell its location by prefixing the command with ./
@@ -226,7 +244,7 @@ make # everything that needs building based on the updated code is built
 sudo make install #perform the installation
 which diction #check that the program is ready to go
 
-			>>>>24 Writing_Script
+################## №24 Writing_Script
 			man bash # contain a lot of information about expansion, variables ...
 chmod 755 ~/bin/sys_info_page # make file executable
 	echo "he 
@@ -243,8 +261,9 @@ f="\t\ta string\n"
 command << token
 	text
 token
+
 #It’s mostly the same as echo, except that, by default, single and double quotes within here documents lose their special meaning to the shell.
-<<- # with <<- shell will ignore tabs
+# <<- # with <<- shell will ignore tabs
 ftp -n <<- _EOF_
 	open $FTP_SERVER
 	user anonymous me@linuxbox
@@ -253,11 +272,13 @@ ftp -n <<- _EOF_
 	get $REMOTE_FILE
 	bye
 _EOF_
-		
-		>>>> 26 TopDown Design
+
+
+################## №26 TopDown Design
 local foo #local variables are defined by preceding the variable name with the word local.
-		
-		>>>> 27 Flow Control: Branching With if
+
+
+################## №27 Flow Control: Branching With if
 if commands; then
 	commands
 [elif commands; then
@@ -285,10 +306,11 @@ file1 -ot file2 # older
 	-t 		
 	-w 		# is writable for current user
 	-x      # is executable
-exit 0 # When no argument is passed, the exit status defaults to the exit status of the last command executed
-# When a script “runs off the end” (reaches end of file), it terminates with an exit status of the last command executed.
+e xit 0 # When no argument is passed, the exit status defaults to the exit status of the last command executed
+
+# When a script “runs off the end” (reaches end of file), it terminates with an exit status of the last command executed
 # Similarly, shell functions can return an exit status by including an integer argument to the return command
-test_file () {
+ test_file () {
 	# test-file: Evaluate the status of a file
 	FILE=~/.bashrc
 	if [ -e "$FILE" ]; then      #always casts to string to avoid a possible problems with an undefined
@@ -322,7 +344,7 @@ string == string2 # strings are equal
 	   != 		  # not equal
 	   > 		  # sorts after string2
 	   < 		  # sorts before # be curefull. use \< \> in test to avoid redirection.
-# Integer Expressions
+# integer Expressions
 integer1 -eq integer2 # is equal
          -ne
          -le # is less or euqal
@@ -353,14 +375,16 @@ fi
 mkdir temp && cd temp
 [[ -d temp ]] || exit 1
 
-			>>>> 28 Reading_Keyboard_Input
+
+
+################## №28 Reading_Keyboard_Input
 read [-options] [variable...]
 read #If no variables are listed after the read command, a shell variable, REPLY, will be assigned all the input
 echo "REPLY = '$REPLY'"
 
 
 
- 		>>>> 30 trouble shooting
+################## №30 trouble shooting
  #!/bin/bash -x 		-x option show executed line
  export PS4='$LINENO + ' #trace configuration
  	#trace a part of code:
@@ -368,22 +392,11 @@ echo "REPLY = '$REPLY'"
  set +x # Turn off tracing
 
 
-
-
-E One, [28.10.18 00:29]
-
-
-
-| is executed in a subshell
+# warning! pipe operator part ( | ) is executed in a subshell!
 
 As a general rule, always precede wildcards (such as * and ?) with ./ to prevent 
 misinterpretation by commands. This includes things like *.pdf and ???.mp3, etc.
-example   rm * to: rm ./*      ("-rf ~".)
-
-#!/bin/bash -x       tracing mode
-
-set -x # Turn on tracing
-set +x # Turn off tracing
+example: change rm * to: rm ./*      ("-rf ~".)
 
 case word in
   [pattern [| pattern]...) commands ;;]...
@@ -400,7 +413,8 @@ Handling Positional Parameters En Masse
 
 #$* is a single string, whereas $@ is an actual array. 
 
-  			>>>>34 – Strings And Numbers
+
+################## №34 – Strings And Numbers
 echo "${a}_file"
 echo ${foo:-"substitute value if unset"}
 echo ${foo:="default value if unset"}
@@ -418,17 +432,22 @@ ${parameter/#pattern/string}
 ${parameter/%pattern/string}
 
 time - compare of script efficiency
+time ls /
+time sleep 5 #should show statistic in approximately 5 sec
 
-declare command can be used to normalize strings to either upper or lowercase.
+declare #command can be used to normalize strings to either upper or lowercase.
 declare -u upper
 declare -l lower
 
 echo $((0xff))    Hexadecimal notation
 echo $((2#11111111))   base#number number is in base
 
-bc – An Arbitrary Precision Calculator Language
+bc #- An Arbitrary Precision Calculator Language
+echo "3*4+14/2" | bc
+expr length  "abcdef"  "<"  5  "|"  15  -  4  ">"  8 #returns 1
 
-  			>>>> 35 – Arrays
+
+################## №35 – Arrays
 declare -a a
 or
 a[1]=foo
@@ -447,7 +466,8 @@ a_sorted=($(for i in "${a[@]}"; do echo $i; done | sort)) Sorting An Array
 declare -A colors
 colors["red"]="#ff0000"
 
-  				>>>> 36 – Exotica
+
+################## №36 – Exotica
 { ls -l; echo "Listing of foo.txt"; cat foo.txt; } > output.txt
 (ls -l; echo "Listing of foo.txt"; cat foo.txt) > output.txt
 { ls -l; echo "Listing of foo.txt"; cat foo.txt; } | lpr
@@ -460,7 +480,8 @@ trap "echo 'I am ignoring you.'" SIGINT SIGTERM
 tempfile=/tmp/$(basename $0).$$.$RANDOM
 tempfile=$(mktemp /tmp/foobar.$$.XXXXXXXXXX) #usage of make temp program
 
-			>>>> "Asynchronous Execution"
+
+################## № Asynchronous Execution
 pid=$!   #always contain the process ID of the last job put into the background.
 wait "$pid"
 
@@ -471,15 +492,19 @@ mkfifo pipe1      #ls -l pipe1     -> prw-r--r-- 1 me me 0 2009-07-17 06:41 pipe
 
 
 
-#####################################################
-#####################################################
+################## №################## №#################
+################## №################## №#################
 
-dos2unix #convert windows-dos endings in script
 
->>>> VirtualBox install tips:
+################## №VirtualBox install tips:
 
 sudo usermod -G vboxsf -a $USER #give access to read host shared directory
 sudo update-alternatives --config java
+
+
+# Windows Sub System For Linux. Ubuntu fs root path
+# c:\Users\Eone\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc\LocalState\rootfs\home\eone\
+
 
 
 
