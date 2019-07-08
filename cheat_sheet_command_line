@@ -495,6 +495,27 @@ mkfifo pipe1      #ls -l pipe1     -> prw-r--r-- 1 me me 0 2009-07-17 06:41 pipe
 ################## №################## №#################
 ################## №################## №#################
 
+#superheroic commands
+
+#1) redo last command with sudo
+sudo !!
+#2) open editor to run a command
+ctrl+x+e
+#3) super fast ram storage
+mkdir /mnt/ram
+mount -t tmpfs tmpfs /mnt/ram/ -o size=8192M
+#benchmarking disk
+dd if=/dev/zero/ of=test.iso bs=1m count=8000
+#5) modify your last command
+mc
+#6) creating tunnels with ssh.
+# 1111-local port, 1270.0.0.1 - remote host, 2222 remote port
+ssh -L 1111:127.0.0.1:2222 root@foo.org -N
+
+#exit terminal but leave all processes running
+disown -a && exit
+
+
 
 ################## №VirtualBox install tips:
 
