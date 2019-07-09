@@ -506,6 +506,8 @@ mkdir /mnt/ram
 mount -t tmpfs tmpfs /mnt/ram/ -o size=8192M
 #benchmarking disk
 dd if=/dev/zero/ of=test.iso bs=1m count=8000
+#4) quickly create folders
+mkdir -p folder/{sub1, sub2}/{sub1, sub2, sub3}
 #5) modify your last command
 mc
 #6) creating tunnels with ssh.
