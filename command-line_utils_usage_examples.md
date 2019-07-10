@@ -1,4 +1,4 @@
-#Different command-line programs usages examples
+# Different command-line programs usages examples
 
 ## jq - JSON processor [github](https://stedolan.github.io/jq/)
 > echo "{\"f1\":{\"f2\":\"v2\"}}" | jq -r '.f1.f2' #will print v2
@@ -25,8 +25,14 @@ Check if we have access to specific ip:port
 dos2unix - DOS/MAC to UNIX text file format converter \
 unix2dos - UNIX to DOS/MAC text file format converter
 
-##tcpdump - packet capture utility 
-https://docs.netgate.com/pfsense/en/latest/book/packetcapture/using-tcpdump-from-the-command-line.html
-> tcpdump -ni wlan host 192.168.1.11 or host 192.168.1.15 and tcp port 80
+## tcpdump - packet capture utility 
+[Common usage examples](https://docs.netgate.com/pfsense/en/latest/book/packetcapture/using-tcpdump-from-the-command-line.html)
+-n disable reverse lookup \
+-i flag specifies the interface \
+Capture all dns traffic: 
+> tcpdump -ni wlan0 port 53
+
+Capture all HTTP traffic to several hosts (combining filters):
+> tcpdump -ni wlan0 host 192.168.1.11 or host 192.168.1.15 and tcp port 80
 
 
