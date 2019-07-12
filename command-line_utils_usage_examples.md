@@ -14,7 +14,10 @@ Opening a raw connection to port 25
 Check if we have access to specific ip:port
 > nc -nv 10.100.80.27 1553
 
-## nmap - network scanner
+Simple server
+> nc -l -p 3002
+
+## nmap - network scanner [wiki](https://en.wikipedia.org/wiki/Netcat)
 -A: Enable OS detection, version detection, script scanning, and traceroute. Scanning Top 1,000 TCP and UDP ports (nmap default).
 > nmap -A scanme.nmap.org
 
@@ -26,13 +29,15 @@ dos2unix - DOS/MAC to UNIX text file format converter \
 unix2dos - UNIX to DOS/MAC text file format converter
 
 ## tcpdump - packet capture utility 
-[Common usage examples](https://docs.netgate.com/pfsense/en/latest/book/packetcapture/using-tcpdump-from-the-command-line.html)
--n disable reverse lookup \
--i flag specifies the interface \
+Common usage examples [here](https://docs.netgate.com/pfsense/en/latest/book/packetcapture/using-tcpdump-from-the-command-line.html) \
 Capture all dns traffic: 
+- -n disable reverse lookup 
+- -i flag specifies the interface 
 > tcpdump -ni wlan0 port 53
 
 Capture all HTTP traffic to several hosts (combining filters):
 > tcpdump -ni wlan0 host 192.168.1.11 or host 192.168.1.15 and tcp port 80
 
+## html2text - preview html document in console
+html2text index.html | less
 

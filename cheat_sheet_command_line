@@ -149,6 +149,7 @@ find ~ -type f -name 'foo*' -ok ls -l '{}' ';'
 find ~ -type f -name 'foo*' -exec ls -l '{}' + # example the system only has to execute the ls command once.
 find ~ -type f -name 'foo*' -print | xargs ls -l # xargs - accepts input from standard input and converts it into an argument list for a specified command
 find playground -type f -newer playground/timestamp
+find . -type f -name "keytool*"
 # Options
 -noleaf -maxdepth levels -depth ...
 
@@ -257,10 +258,17 @@ c="a string and $b"
 d="$(ls -l foo.txt)"
 e=$((5 * 7))
 f="\t\ta string\n"
+
 #additional form of I/O redirection
+#https://bash.cyberciti.biz/guide/Here_documents
+# << calls: Here documents
 command << token
 	text
 token
+# "Here strings" is just like here documents and syntax is:
+wc -w <<< "This is a test."
+tee <<< "${PS1}
+tee <<< "$(echo lol)""
 
 #It’s mostly the same as echo, except that, by default, single and double quotes within here documents lose their special meaning to the shell.
 # <<- # with <<- shell will ignore tabs
