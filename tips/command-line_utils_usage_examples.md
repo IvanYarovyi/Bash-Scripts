@@ -41,3 +41,8 @@ Capture all HTTP traffic to several hosts (combining filters):
 ## html2text - preview html document in console
 html2text index.html | less
 
+## service - run a System V script
+> service --status-all
+> service redis-server start
+### systemclt - service manager
+> systemctl disable redis

@@ -137,7 +137,7 @@ sudo useradd -m test2 # create a new user with home dir.
 sudo passwd test2 # add a password
 			
 ################## №17 FIND
-locate zip | grep bin # file, derectories serach by part of name. Uses a db from updatedb that is setuped by cron job
+locate zip | grep bin # file, directories search by part of name. Uses a db from updatedb that is setup by cron job
 # "tests"
 find ~ | wc -l #more options then locate
 find ~ -type f -name "*.JPG" -size +1M | wc -l
@@ -351,13 +351,13 @@ string = string2  # strings are equal. the same as =
 string == string2 # strings are equal
 	   != 		  # not equal
 	   > 		  # sorts after string2
-	   < 		  # sorts before # be curefull. use \< \> in test to avoid redirection.
+	   < 		  # sorts before # be careful. use \< \> in test to avoid redirection.
 # integer Expressions
 integer1 -eq integer2 # is equal
          -ne
-         -le # is less or euqal
+         -le # is less or equal
          -lt # is less
-         -ge # is grater or euqal
+         -ge # is grater or equal
          -gt 
 if [ $((INT % 2)) -eq 0 ]; then
 	echo "INT is even."
@@ -400,24 +400,26 @@ echo "REPLY = '$REPLY'"
  set +x # Turn off tracing
 
 
-# warning! pipe operator part ( | ) is executed in a subshell!
+# warning! pipe operator part ( | ) is executed in a sub-shell!
 
-As a general rule, always precede wildcards (such as * and ?) with ./ to prevent 
-misinterpretation by commands. This includes things like *.pdf and ???.mp3, etc.
-example: change rm * to: rm ./*      ("-rf ~".)
+# As a general rule, always precede wildcards (such as * and ?) with ./ to prevent 
+# misinterpretation by commands. This includes things like *.pdf and ???.mp3, etc.
+# example: change rm * to: rm ./*      ("-rf ~".)
 
 case word in
   [pattern [| pattern]...) commands ;;]...
 esac
 
-Modern versions of bash, add the “;;&” notation to
+# Modern versions of bash, add the “;;&” notation to
 
-$#, Determining The Number of Arguments
+# Determining The Number of Arguments
+$#
 
-The shift command causes all the parameters to “move down one” each time it is executed
+# The shift command causes all the parameters to “move down one” each time it is executed
 
-Handling Positional Parameters En Masse
-"$@" produces a two word result: "word" "words with spaces"
+# Handling Positional Parameters
+# produces a two word result: "word" "words with spaces"
+$@ 
 
 #$* is a single string, whereas $@ is an actual array. 
 
@@ -493,7 +495,7 @@ tempfile=$(mktemp /tmp/foobar.$$.XXXXXXXXXX) #usage of make temp program
 pid=$!   #always contain the process ID of the last job put into the background.
 wait "$pid"
 
-  Named pipe
+# Named pipe
 mkfifo pipe1      #ls -l pipe1     -> prw-r--r-- 1 me me 0 2009-07-17 06:41 pipe1 (p is a first letter)
 1st terminal: ls -l > pipe1
 2nd terminal: cat < pipe1
